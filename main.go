@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/go-co-op/gocron"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -69,12 +70,12 @@ func main() {
 	)
 	flag.Parse()
 
-	go func() {
-		for {
-			getResticMetrics()
-			time.Sleep(time.Duration(*interval) * time.Second)
-		}
-	}()
+	s := gocron.NewScheduler(time.UTC)
+	_, err := s.Every(*interval).Seconds().Do(updateResticMetrics)
+	if err != nil {
+		log.Fatalf("Error scheduling job")
+	}
+	s.StartAsync()
 
 	mux := http.NewServeMux()
 	mux.Handle("/metrics", promhttp.Handler())
@@ -83,11 +84,11 @@ func main() {
 	log.Printf("Starting restic exporter on %q/metrics", port)
 
 	if err := http.ListenAndServe(port, mux); err != nil {
-		log.Fatalf("cannot start restic exporter: %s", err)
+		log.Fatalf("Cannot start restic exporter: %s", err)
 	}
 }
 
-func getResticMetrics() {
+func updateResticMetrics() {
 	restoreDataStats := getRestoreDataStats()
 	rawDataStats := getRawDataStats()
 	restoreSizeTotal.WithLabelValues("repo").Set(float64(restoreDataStats.TotalSize))

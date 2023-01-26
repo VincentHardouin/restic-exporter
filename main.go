@@ -14,39 +14,39 @@ import (
 
 var (
 	snapshotsTotal = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "restic_snapshot_total",
+		Name: "restic_stats_snapshot_total",
 		Help: "Number of snapshots",
 	}, []string{"repository"})
 	restoreSizeTotal = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "restic_restore_size_bytes_total",
+		Name: "restic_stats_restore_size_bytes_total",
 		Help: "Size of repository in bytes",
 	}, []string{"repository"})
 	rawSizeTotal = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "restic_raw_size_bytes_total",
+		Name: "restic_stats_raw_size_bytes_total",
 		Help: "Size of repository in bytes",
 	}, []string{"repository"})
 	uncompressedSizeTotal = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "restic_uncompressed_size_bytes_total",
+		Name: "restic_stats_uncompressed_size_bytes_total",
 		Help: "Size of repository in bytes",
 	}, []string{"repository"})
 	blobTotal = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "restic_blob_total",
+		Name: "restic_stats_blob_total",
 		Help: "Number of blob",
 	}, []string{"repository"})
 	fileTotal = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "restic_file_total",
+		Name: "restic_stats_file_total",
 		Help: "Number of files",
 	}, []string{"repository"})
 	compressionRatio = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "restic_compression_ratio",
+		Name: "restic_stats_compression_ratio",
 		Help: "Compression ratio",
 	}, []string{"repository"})
 	compressionSpaceSavingTotal = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "restic_compression_space_saving_bytes_total",
+		Name: "restic_stats_compression_space_saving_bytes_total",
 		Help: "Compression space saving",
 	}, []string{"repository"})
 	compressionProgress = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "restic_compression_progress_percent",
+		Name: "restic_stats_compression_progress_percent",
 		Help: "Compression ",
 	}, []string{"repository"})
 )

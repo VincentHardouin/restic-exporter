@@ -34,18 +34,18 @@ type snapshot struct {
 	ID       string    `json:"id"`
 }
 
-func getRestoreDataStats() restoreDataStats {
+func getRestoreDataStats(restic ResticConfig) restoreDataStats {
 	var stats restoreDataStats
-	err := json.Unmarshal(getStats("restore-size"), &stats)
+	err := json.Unmarshal(getStats("restore-size", restic), &stats)
 	if err != nil {
 		return restoreDataStats{}
 	}
 	return stats
 }
 
-func getRawDataStats() rawDataStats {
+func getRawDataStats(restic ResticConfig) rawDataStats {
 	var stats rawDataStats
-	err := json.Unmarshal(getStats("raw-data"), &stats)
+	err := json.Unmarshal(getStats("raw-data", restic), &stats)
 	if err != nil {
 		return rawDataStats{}
 	}
@@ -53,11 +53,11 @@ func getRawDataStats() rawDataStats {
 	return stats
 }
 
-func getStats(mode string) []byte {
+func getStats(mode string, restic ResticConfig) []byte {
 	cmd := exec.Command("restic", "stats", fmt.Sprintf("--mode=%s", mode), "--no-lock", "--json")
 	cmd.Env = os.Environ()
-	cmd.Env = append(cmd.Env, os.Getenv("RESTIC_REPOSITORY"))
-	cmd.Env = append(cmd.Env, os.Getenv("RESTIC_PASSWORD"))
+	cmd.Env = append(cmd.Env, restic.Repository)
+	cmd.Env = append(cmd.Env, restic.Password)
 	stdout, err := cmd.CombinedOutput()
 
 	if err != nil {
@@ -67,11 +67,11 @@ func getStats(mode string) []byte {
 	return stdout
 }
 
-func getLatestSnapshotInformation() snapshot {
+func getLatestSnapshotInformation(restic ResticConfig) snapshot {
 	cmd := exec.Command("restic", "snapshots", "--latest=1", "--no-lock", "--json")
 	cmd.Env = os.Environ()
-	cmd.Env = append(cmd.Env, os.Getenv("RESTIC_REPOSITORY"))
-	cmd.Env = append(cmd.Env, os.Getenv("RESTIC_PASSWORD"))
+	cmd.Env = append(cmd.Env, restic.Repository)
+	cmd.Env = append(cmd.Env, restic.Password)
 	stdout, errCmd := cmd.CombinedOutput()
 
 	if errCmd != nil {

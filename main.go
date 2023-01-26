@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/go-co-op/gocron"
+	"github.com/joho/godotenv"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -56,7 +57,11 @@ var (
 	}, []string{"repository", "host", "username", "id", "path", "exludes"})
 )
 
+var config *Config
+
 func init() {
+	godotenv.Load()
+
 	prometheus.MustRegister(snapshotsTotal)
 	prometheus.MustRegister(restoreSizeTotal)
 	prometheus.MustRegister(rawSizeTotal)
@@ -70,6 +75,7 @@ func init() {
 }
 
 func main() {
+	config = getConfig()
 	var (
 		promPort = flag.Int("prom.port", 9150, "port to expose prometheus metrics")
 		interval = flag.Int("interval", 60, "number of seconds between each refresh")
@@ -95,28 +101,28 @@ func main() {
 }
 
 func updateResticMetrics() {
-	updateStatisticsMetrics()
-	updateSnapshotsMetrics()
+	updateStatisticsMetrics(config.Restic)
+	updateSnapshotsMetrics(config.Restic)
 }
 
-func updateStatisticsMetrics() {
-	restoreDataStats := getRestoreDataStats()
-	rawDataStats := getRawDataStats()
-	restoreSizeTotal.WithLabelValues("repo").Set(float64(restoreDataStats.TotalSize))
-	snapshotsTotal.WithLabelValues("repo").Set(float64(restoreDataStats.SnapshotsCount))
-	fileTotal.WithLabelValues("repo").Set(float64(restoreDataStats.TotalFileCount))
+func updateStatisticsMetrics(restic ResticConfig) {
+	restoreDataStats := getRestoreDataStats(restic)
+	rawDataStats := getRawDataStats(restic)
+	restoreSizeTotal.WithLabelValues(restic.Repository).Set(float64(restoreDataStats.TotalSize))
+	snapshotsTotal.WithLabelValues(restic.Repository).Set(float64(restoreDataStats.SnapshotsCount))
+	fileTotal.WithLabelValues(restic.Repository).Set(float64(restoreDataStats.TotalFileCount))
 
-	rawSizeTotal.WithLabelValues("repo").Set(float64(rawDataStats.TotalSize))
-	uncompressedSizeTotal.WithLabelValues("repo").Set(float64(rawDataStats.TotalUncompressedSize))
-	blobTotal.WithLabelValues("repo").Set(float64(rawDataStats.TotalBlobCount))
-	compressionRatio.WithLabelValues("repo").Set(float64(rawDataStats.CompressionRatio))
-	compressionSpaceSavingTotal.WithLabelValues("repo").Set(float64(rawDataStats.CompressionSpaceSaving))
-	compressionProgress.WithLabelValues("repo").Set(float64(rawDataStats.CompressionProgress))
+	rawSizeTotal.WithLabelValues(restic.Repository).Set(float64(rawDataStats.TotalSize))
+	uncompressedSizeTotal.WithLabelValues(restic.Repository).Set(float64(rawDataStats.TotalUncompressedSize))
+	blobTotal.WithLabelValues(restic.Repository).Set(float64(rawDataStats.TotalBlobCount))
+	compressionRatio.WithLabelValues(restic.Repository).Set(float64(rawDataStats.CompressionRatio))
+	compressionSpaceSavingTotal.WithLabelValues(restic.Repository).Set(float64(rawDataStats.CompressionSpaceSaving))
+	compressionProgress.WithLabelValues(restic.Repository).Set(float64(rawDataStats.CompressionProgress))
 }
 
-func updateSnapshotsMetrics() {
-	latestSnapshotInformation := getLatestSnapshotInformation()
+func updateSnapshotsMetrics(restic ResticConfig) {
+	latestSnapshotInformation := getLatestSnapshotInformation(restic)
 	paths := strings.Join(latestSnapshotInformation.Paths, ",")
 	excludes := strings.Join(latestSnapshotInformation.Excludes, ",")
-	snapshotsLatestTimestamp.WithLabelValues("repo", latestSnapshotInformation.Hostname, latestSnapshotInformation.Username, latestSnapshotInformation.ID, paths, excludes).Set(float64(latestSnapshotInformation.Time.Unix()))
+	snapshotsLatestTimestamp.WithLabelValues(restic.Repository, latestSnapshotInformation.Hostname, latestSnapshotInformation.Username, latestSnapshotInformation.ID, paths, excludes).Set(float64(latestSnapshotInformation.Time.Unix()))
 }

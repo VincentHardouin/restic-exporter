@@ -48,7 +48,7 @@ var (
 	}, []string{"repository"})
 	compressionProgress = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "restic_stats_compression_progress_percent",
-		Help: "Compression ",
+		Help: "Compression progression",
 	}, []string{"repository"})
 	snapshotsLatestTimestamp = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "restic_snapshots_latest_timestamp",

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"time"
 )
 
 // https://github.com/restic/restic/blob/b90308180458f5d0bbe49b03fa8cc312c2e97127/cmd/restic/cmd_stats.go#L304
@@ -22,6 +23,15 @@ type rawDataStats struct {
 	CompressionSpaceSaving float64 `json:"compression_space_saving,omitempty"`
 	TotalBlobCount         uint64  `json:"total_blob_count,omitempty"`
 	SnapshotsCount         int     `json:"snapshots_count"`
+}
+
+type snapshot struct {
+	Time     time.Time `json:"time"`
+	Paths    []string  `json:"paths"`
+	Hostname string    `json:"hostname"`
+	Username string    `json:"username"`
+	Excludes []string  `json:"excludes"`
+	ID       string    `json:"id"`
 }
 
 func getRestoreDataStats() restoreDataStats {
@@ -55,4 +65,23 @@ func getStats(mode string) []byte {
 	}
 
 	return stdout
+}
+
+func getLatestSnapshotInformation() snapshot {
+	cmd := exec.Command("restic", "snapshots", "--latest=1", "--no-lock", "--json")
+	cmd.Env = os.Environ()
+	cmd.Env = append(cmd.Env, os.Getenv("RESTIC_REPOSITORY"))
+	cmd.Env = append(cmd.Env, os.Getenv("RESTIC_PASSWORD"))
+	stdout, errCmd := cmd.CombinedOutput()
+
+	if errCmd != nil {
+		fmt.Println(errCmd.Error())
+	}
+
+	var snapshotInformation snapshot
+	err := json.Unmarshal(stdout, &snapshotInformation)
+	if err != nil {
+		return snapshot{}
+	}
+	return snapshotInformation
 }

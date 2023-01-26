@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/go-co-op/gocron"
@@ -49,6 +50,10 @@ var (
 		Name: "restic_stats_compression_progress_percent",
 		Help: "Compression ",
 	}, []string{"repository"})
+	snapshotsLatestTimestamp = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "restic_snapshots_latest_timestamp",
+		Help: "Timestamp of the last backup",
+	}, []string{"repository", "host", "username", "id", "path", "exludes"})
 )
 
 func init() {
@@ -61,6 +66,7 @@ func init() {
 	prometheus.MustRegister(compressionRatio)
 	prometheus.MustRegister(compressionSpaceSavingTotal)
 	prometheus.MustRegister(compressionProgress)
+	prometheus.MustRegister(snapshotsLatestTimestamp)
 }
 
 func main() {
@@ -89,6 +95,11 @@ func main() {
 }
 
 func updateResticMetrics() {
+	updateStatisticsMetrics()
+	updateSnapshotsMetrics()
+}
+
+func updateStatisticsMetrics() {
 	restoreDataStats := getRestoreDataStats()
 	rawDataStats := getRawDataStats()
 	restoreSizeTotal.WithLabelValues("repo").Set(float64(restoreDataStats.TotalSize))
@@ -101,4 +112,11 @@ func updateResticMetrics() {
 	compressionRatio.WithLabelValues("repo").Set(float64(rawDataStats.CompressionRatio))
 	compressionSpaceSavingTotal.WithLabelValues("repo").Set(float64(rawDataStats.CompressionSpaceSaving))
 	compressionProgress.WithLabelValues("repo").Set(float64(rawDataStats.CompressionProgress))
+}
+
+func updateSnapshotsMetrics() {
+	latestSnapshotInformation := getLatestSnapshotInformation()
+	paths := strings.Join(latestSnapshotInformation.Paths, ",")
+	excludes := strings.Join(latestSnapshotInformation.Excludes, ",")
+	snapshotsLatestTimestamp.WithLabelValues("repo", latestSnapshotInformation.Hostname, latestSnapshotInformation.Username, latestSnapshotInformation.ID, paths, excludes).Set(float64(latestSnapshotInformation.Time.Unix()))
 }

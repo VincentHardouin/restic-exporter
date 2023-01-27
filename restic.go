@@ -85,3 +85,15 @@ func getLatestSnapshotInformation(restic ResticConfig) snapshot {
 	}
 	return snapshotInformation
 }
+
+func getCheckStatus(restic ResticConfig) int {
+  cmd := exec.Command("restic", "snapshots", "--latest=1", "--no-lock", "--json")
+  cmd.Env = os.Environ()
+  cmd.Env = append(cmd.Env, restic.Repository)
+  cmd.Env = append(cmd.Env, restic.Password)
+  err := cmd.Run()
+  if err != nil {
+    return 0
+  }
+  return 1
+}

@@ -55,6 +55,10 @@ var (
 		Name: "restic_snapshots_latest_timestamp",
 		Help: "Timestamp of the last backup",
 	}, []string{"repository", "host", "username", "id", "path", "exludes"})
+  checkStatus = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+    Name: "restic_check_status",
+    Help: "Result of restic check operation in the repository",
+    }, []string{"repository"})
 )
 
 var config *Config
@@ -72,6 +76,7 @@ func init() {
 	prometheus.MustRegister(compressionSpaceSavingTotal)
 	prometheus.MustRegister(compressionProgress)
 	prometheus.MustRegister(snapshotsLatestTimestamp)
+	prometheus.MustRegister(checkStatus)
 }
 
 func main() {
@@ -103,6 +108,7 @@ func main() {
 func updateResticMetrics() {
 	updateStatisticsMetrics(config.Restic)
 	updateSnapshotsMetrics(config.Restic)
+  updateCheckStatus(config.Restic)
 }
 
 func updateStatisticsMetrics(restic ResticConfig) {
@@ -125,4 +131,9 @@ func updateSnapshotsMetrics(restic ResticConfig) {
 	paths := strings.Join(latestSnapshotInformation.Paths, ",")
 	excludes := strings.Join(latestSnapshotInformation.Excludes, ",")
 	snapshotsLatestTimestamp.WithLabelValues(restic.Repository, latestSnapshotInformation.Hostname, latestSnapshotInformation.Username, latestSnapshotInformation.ID, paths, excludes).Set(float64(latestSnapshotInformation.Time.Unix()))
+}
+
+func updateCheckStatus(restic ResticConfig) {
+  status := getCheckStatus(restic)
+  checkStatus.WithLabelValues(restic.Repository).Set(float64(status))
 }

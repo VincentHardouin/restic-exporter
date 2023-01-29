@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/VincentHardouin/restic-exporter/compare/v1.0.1...v1.0.2) (2023-01-29)
+
+
+### Bug Fixes
+
+* return good snapshot information metrics ([b9243a4](https://github.com/VincentHardouin/restic-exporter/commit/b9243a47834d17047e7564154d471f49dce9d0b1))
+
 ## [1.0.1](https://github.com/VincentHardouin/restic-exporter/compare/v1.0.0...v1.0.1) (2023-01-29)
 
 # 1.0.0 (2023-01-29)

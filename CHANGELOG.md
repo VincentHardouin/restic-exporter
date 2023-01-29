@@ -1,3 +1,5 @@
+## [1.0.1](https://github.com/VincentHardouin/restic-exporter/compare/v1.0.0...v1.0.1) (2023-01-29)
+
 # 1.0.0 (2023-01-29)
 
 

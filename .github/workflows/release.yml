@@ -9,6 +9,10 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    outputs:
+      new_release_published: ${{ steps.semantic.outputs.new_release_published }}
+      new_release_version: ${{ steps.semantic.outputs.new_release_version }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -26,6 +30,18 @@ jobs:
             @semantic-release/git@10.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+  release-docker-image:
+    needs: [release]
+    if: needs.release.outputs.new_release_published == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -47,4 +63,4 @@ jobs:
           push: true
           tags: |
             nidourah/restic-exporter:latest
-            nidourah/restic-exporter:${{ steps.semantic.outputs.new_release_version }}
+            nidourah/restic-exporter:${{ needs.release.outputs.new_release_version }}

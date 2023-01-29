@@ -87,6 +87,7 @@ func main() {
 	)
 	flag.Parse()
 
+  log.Printf("Interval: %d", *interval)
 	s := gocron.NewScheduler(time.UTC)
 	_, err := s.Every(*interval).Seconds().Do(updateResticMetrics)
 	if err != nil {

@@ -78,12 +78,13 @@ func getLatestSnapshotInformation(restic ResticConfig) snapshot {
 		fmt.Println(errCmd.Error())
 	}
 
-	var snapshotInformation snapshot
+  var snapshotInformation []snapshot
 	err := json.Unmarshal(stdout, &snapshotInformation)
 	if err != nil {
+    fmt.Println(err.Error())
 		return snapshot{}
 	}
-	return snapshotInformation
+	return snapshotInformation[0]
 }
 
 func getCheckStatus(restic ResticConfig) int {

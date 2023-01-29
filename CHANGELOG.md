@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/VincentHardouin/restic-exporter/compare/v1.0.2...v1.1.0) (2023-01-29)
+
+
+### Features
+
+* add interval log info ([6d67da8](https://github.com/VincentHardouin/restic-exporter/commit/6d67da848c0c2d1fb56b559f73e2c20148dba25f))
+
 ## [1.0.2](https://github.com/VincentHardouin/restic-exporter/compare/v1.0.1...v1.0.2) (2023-01-29)
 
 

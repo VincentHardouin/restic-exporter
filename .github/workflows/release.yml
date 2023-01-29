@@ -9,6 +9,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    outputs:
+      new_release_published: ${{ steps.semantic.outputs.new_release_published }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -26,6 +29,20 @@ jobs:
             @semantic-release/git@10.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+  release-docker-image:
+    needs: [release]
+    if: needs.release.outputs.new_release_published == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      newReleasePublished: ${{ steps.semantic.outputs.new_release_published }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2

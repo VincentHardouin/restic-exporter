@@ -55,10 +55,10 @@ var (
 		Name: "restic_snapshots_latest_timestamp",
 		Help: "Timestamp of the last backup",
 	}, []string{"repository", "host", "username", "id", "path", "exludes"})
-  checkStatus = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-    Name: "restic_check_status",
-    Help: "Result of restic check operation in the repository",
-    }, []string{"repository"})
+	checkStatus = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "restic_check_status",
+		Help: "Result of restic check operation in the repository",
+	}, []string{"repository"})
 )
 
 var config *Config
@@ -87,7 +87,7 @@ func main() {
 	)
 	flag.Parse()
 
-  log.Printf("Interval: %d", *interval)
+	log.Printf("Interval: %d", *interval)
 	s := gocron.NewScheduler(time.UTC)
 	_, err := s.Every(*interval).Seconds().Do(updateResticMetrics)
 	if err != nil {
@@ -109,7 +109,7 @@ func main() {
 func updateResticMetrics() {
 	updateStatisticsMetrics(config.Restic)
 	updateSnapshotsMetrics(config.Restic)
-  updateCheckStatus(config.Restic)
+	updateCheckStatus(config.Restic)
 }
 
 func updateStatisticsMetrics(restic ResticConfig) {
@@ -135,6 +135,6 @@ func updateSnapshotsMetrics(restic ResticConfig) {
 }
 
 func updateCheckStatus(restic ResticConfig) {
-  status := getCheckStatus(restic)
-  checkStatus.WithLabelValues(restic.Repository).Set(float64(status))
+	status := getCheckStatus(restic)
+	checkStatus.WithLabelValues(restic.Repository).Set(float64(status))
 }

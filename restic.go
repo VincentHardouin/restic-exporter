@@ -78,23 +78,23 @@ func getLatestSnapshotInformation(restic ResticConfig) snapshot {
 		fmt.Println(errCmd.Error())
 	}
 
-  var snapshotInformation []snapshot
+	var snapshotInformation []snapshot
 	err := json.Unmarshal(stdout, &snapshotInformation)
 	if err != nil {
-    fmt.Println(err.Error())
+		fmt.Println(err.Error())
 		return snapshot{}
 	}
 	return snapshotInformation[0]
 }
 
 func getCheckStatus(restic ResticConfig) int {
-  cmd := exec.Command("restic", "snapshots", "--latest=1", "--no-lock", "--json")
-  cmd.Env = os.Environ()
-  cmd.Env = append(cmd.Env, restic.Repository)
-  cmd.Env = append(cmd.Env, restic.Password)
-  err := cmd.Run()
-  if err != nil {
-    return 0
-  }
-  return 1
+	cmd := exec.Command("restic", "snapshots", "--latest=1", "--no-lock", "--json")
+	cmd.Env = os.Environ()
+	cmd.Env = append(cmd.Env, restic.Repository)
+	cmd.Env = append(cmd.Env, restic.Password)
+	err := cmd.Run()
+	if err != nil {
+		return 0
+	}
+	return 1
 }

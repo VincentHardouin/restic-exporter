@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/VincentHardouin/restic-exporter/compare/v1.1.0...v1.2.0) (2023-02-06)
+
+
+### Features
+
+* add backup summaries metrics ([43e25b9](https://github.com/VincentHardouin/restic-exporter/commit/43e25b9e0e5a18151ab9556327b58cbb6bf7cbdf))
+* handle new FT backup summary ([8fc17e1](https://github.com/VincentHardouin/restic-exporter/commit/8fc17e1bf641da626858171b0219cf4505524ae2))
+
 # [1.1.0](https://github.com/VincentHardouin/restic-exporter/compare/v1.0.2...v1.1.0) (2023-01-29)
 
 

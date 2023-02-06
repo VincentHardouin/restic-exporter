@@ -34,6 +34,24 @@ type snapshot struct {
 	ID       string    `json:"id"`
 }
 
+type backupSummary struct {
+	FilesNew            int     `json:"files_new"`
+	FilesChanged        int     `json:"files_changed"`
+	FilesUnmodified     int     `json:"files_unmodified"`
+	DirsNew             int     `json:"dirs_new"`
+	DirsChanged         int     `json:"dirs_changed"`
+	DirsUnmodified      int     `json:"dirs_unmodified"`
+	DataBlobs           int     `json:"data_blobs"`
+	TreeBlobs           int     `json:"tree_blobs"`
+	DataAdded           int     `json:"data_added"`
+	TotalFilesProcessed int     `json:"total_files_processed"`
+	TotalBytesProcessed int     `json:"total_bytes_processed"`
+	TotalDuration       float64 `json:"total_duration"`
+	SnapshotID          string  `json:"snapshot_id"`
+}
+
+var summary backupSummary
+
 func getRestoreDataStats(restic ResticConfig) restoreDataStats {
 	var stats restoreDataStats
 	err := json.Unmarshal(getStats("restore-size", restic), &stats)
@@ -97,4 +115,12 @@ func getCheckStatus(restic ResticConfig) int {
 		return 0
 	}
 	return 1
+}
+
+func saveBackupSummary(newSummary backupSummary) {
+	summary = newSummary
+}
+
+func getBackupSummary() backupSummary {
+	return summary
 }

@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/VincentHardouin/restic-exporter/compare/v1.2.0...v1.2.1) (2023-02-20)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/joho/godotenv to v1.5.1 ([546d7dd](https://github.com/VincentHardouin/restic-exporter/commit/546d7ddedfdc94fe85c8bfce54f12ce07da1e9dd))
+
 # [1.2.0](https://github.com/VincentHardouin/restic-exporter/compare/v1.1.0...v1.2.0) (2023-02-06)
 
 

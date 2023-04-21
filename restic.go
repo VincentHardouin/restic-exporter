@@ -106,7 +106,7 @@ func getLatestSnapshotInformation(restic ResticConfig) snapshot {
 }
 
 func getCheckStatus(restic ResticConfig) int {
-	cmd := exec.Command("restic", "snapshots", "--latest=1", "--no-lock", "--json")
+	cmd := exec.Command("restic", "check", "--no-lock")
 	cmd.Env = os.Environ()
 	cmd.Env = append(cmd.Env, restic.Repository)
 	cmd.Env = append(cmd.Env, restic.Password)

@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/VincentHardouin/restic-exporter/compare/v1.3.0...v1.3.1) (2023-04-21)
+
+
+### Bug Fixes
+
+* method not allowed response ([fe81afd](https://github.com/VincentHardouin/restic-exporter/commit/fe81afd93133fd69a479a2a51209d4285e04f6c7))
+
 # [1.3.0](https://github.com/VincentHardouin/restic-exporter/compare/v1.2.2...v1.3.0) (2023-04-21)
 
 

@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/VincentHardouin/restic-exporter/compare/v1.2.2...v1.3.0) (2023-04-21)
+
+
+### Bug Fixes
+
+* use restic check command in getCheckStatus ([df96c21](https://github.com/VincentHardouin/restic-exporter/commit/df96c21088851301da382a5e1a4743c5dfc24bb4))
+
+
+### Features
+
+* add host in get latest snapshot command ([b9d3241](https://github.com/VincentHardouin/restic-exporter/commit/b9d32417c080a25831321297f9ace9802003f180))
+
 ## [1.2.2](https://github.com/VincentHardouin/restic-exporter/compare/v1.2.1...v1.2.2) (2023-03-13)
 
 

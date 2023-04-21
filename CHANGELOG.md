@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/VincentHardouin/restic-exporter/compare/v1.3.1...v1.4.0) (2023-04-21)
+
+
+### Features
+
+* improve bad request error ([6e23e10](https://github.com/VincentHardouin/restic-exporter/commit/6e23e107cb82cdfbd56f4dc9e318e9eae0e658ca))
+
 ## [1.3.1](https://github.com/VincentHardouin/restic-exporter/compare/v1.3.0...v1.3.1) (2023-04-21)
 
 

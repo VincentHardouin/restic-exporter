@@ -259,7 +259,9 @@ func (s *saveBackupSummaryHandler) ServeHTTP(w http.ResponseWriter, r *http.Requ
 
 	err := json.NewDecoder(r.Body).Decode(&summary)
 	if err != nil {
-		log.Fatalln("There was an error decoding the request body into the struct")
+		log.Println("There was an error decoding the request body into the struct")
+		http.Error(w, "Bad Request", 400)
+		return
 	}
 
 	saveBackupSummary(summary)

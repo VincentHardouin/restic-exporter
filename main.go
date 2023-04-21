@@ -185,7 +185,7 @@ func main() {
 }
 
 func startServer(serverName string, port string, mux *http.ServeMux) {
-	log.Printf("Stating %s %q", serverName, port)
+	log.Printf("Starting %s %q", serverName, port)
 	if err := http.ListenAndServe(port, mux); err != nil {
 		log.Fatalf("Cannot start %s: %s", serverName, err)
 	}
@@ -253,6 +253,7 @@ type saveBackupSummaryHandler struct {
 func (s *saveBackupSummaryHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method Not Allowed", 405)
+		return
 	}
 	var summary backupSummary
 

@@ -10,6 +10,7 @@ import (
 type ResticConfig struct {
 	Repository string
 	Password   string
+	Host       string
 }
 
 type FeatureToggles struct {
@@ -26,6 +27,7 @@ func getConfig() *Config {
 		Restic: ResticConfig{
 			Repository: getEnv("RESTIC_REPOSITORY", "", true),
 			Password:   getEnv("RESTIC_PASSWORD", "", true),
+			Host:       getEnv("RESTIC_HOST", "", true),
 		},
 		FeatureToggles: FeatureToggles{
 			BackupSummary: getEnvAsBool("FT_BACKUP_SUMMARY", false),

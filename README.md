@@ -34,6 +34,7 @@ Create `repo-variables.env` file with :
 ```env
 RESTIC_REPOSITORY=
 RESTIC_PASSWORD=
+RESTIC_HOST=
 
 FT_BACKUP_SUMMARY=true # Allow to send backup summaries with POST /backups/summaries
 

@@ -86,7 +86,7 @@ func getStats(mode string, restic ResticConfig) []byte {
 }
 
 func getLatestSnapshotInformation(restic ResticConfig) snapshot {
-	cmd := exec.Command("restic", "snapshots", "--latest=1", "--no-lock", "--json")
+	cmd := exec.Command("restic", "snapshots", "--latest=1", fmt.Sprintf("--host=%s", restic.Host), "--no-lock", "--json")
 	cmd.Env = os.Environ()
 	cmd.Env = append(cmd.Env, restic.Repository)
 	cmd.Env = append(cmd.Env, restic.Password)

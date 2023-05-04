@@ -3,7 +3,7 @@ module restic-exporter
 go 1.19
 
 require (
-	github.com/go-co-op/gocron v1.18.1
+	github.com/go-co-op/gocron v1.23.0
 	github.com/joho/godotenv v1.5.1
 	github.com/prometheus/client_golang v1.14.0
 )

@@ -1,3 +1,10 @@
+## [1.4.5](https://github.com/VincentHardouin/restic-exporter/compare/v1.4.4...v1.4.5) (2023-06-05)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/go-co-op/gocron to v1.28.0 ([a855cca](https://github.com/VincentHardouin/restic-exporter/commit/a855ccac0dd73218b49dbb9674fbf909608d8374))
+
 ## [1.4.4](https://github.com/VincentHardouin/restic-exporter/compare/v1.4.3...v1.4.4) (2023-05-29)
 
 

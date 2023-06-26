@@ -1,3 +1,10 @@
+## [1.4.6](https://github.com/VincentHardouin/restic-exporter/compare/v1.4.5...v1.4.6) (2023-06-26)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/prometheus/client_golang to v1.16.0 ([8fecd04](https://github.com/VincentHardouin/restic-exporter/commit/8fecd04edca3698f34db7c2276c64df72e3da1d5))
+
 ## [1.4.5](https://github.com/VincentHardouin/restic-exporter/compare/v1.4.4...v1.4.5) (2023-06-05)
 
 
